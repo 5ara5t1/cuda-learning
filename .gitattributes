@@ -1,0 +1,2 @@
+nsys_easy linguist-vendored=true
+*.sh linguist-vendored=true
