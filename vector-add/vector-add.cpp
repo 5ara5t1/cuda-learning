@@ -1,5 +1,8 @@
 #include <iostream>
 #include <math.h>
+#include <chrono>
+
+
 
 
 // function to add the elements of two arrays
@@ -21,8 +24,14 @@ int main(void) {
         y[i] = 2.0f;
     }
 
+    // capture start time (CPU FOR)
+    auto start = std::chrono::steady_clock::now();
+
     // Run kernel on 1M elements on the CPU
     add(N, x, y);
+
+    // 2. Capture end time (CPU FOR)
+    auto end = std::chrono::steady_clock::now();
 
     // Check for errors (all values should be 3.0f)
     float maxError = 0.0f;
@@ -31,6 +40,9 @@ int main(void) {
     }
     std::cout << "Max error: " << maxError << std::endl;
 
+    // Calculate time diference in nanoseconds, print to user
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+    std::cout << "Time: " << elapsed.count() << " ns" << std::endl;
     // free memeory
     delete [] x;
     delete [] y;
