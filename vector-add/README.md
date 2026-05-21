@@ -10,6 +10,8 @@ Based on Mark Harris's
 [*An Even Easier Introduction to CUDA*](https://developer.nvidia.com/blog/even-easier-introduction-cuda/),
 extended with grid-stride scheduling and Unified Memory prefetching.
 
+The nsys_easy script is provided by Mark Harris, originally from [*here*](https://github.com/harrism/nsys_easy).
+
 ## Build
 
     nvcc -arch=sm_75 -O3 vector-add.cu -o vector-add

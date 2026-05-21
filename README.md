@@ -12,7 +12,7 @@ Compiled on RTX 2070 Super (Turing, SM_75). Default build flag: `-arch=sm_75`.
 |---|---|---|
 | [vector-add](vector-add/) | Element-wise vector add with CUDA Unified Memory and prefetch. | 2026-05-16 |
 
-Planned: SAXPY, matrix transpose (naive / coalesced / tiled), reductions, naive matmul.
+Planned: matrix transpose (naive / coalesced / tiled), reductions, naive matmul.
 
 ## Build
 
