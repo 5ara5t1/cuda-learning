@@ -4,7 +4,9 @@
 // main entry point
 int main() {
 
-    // print hello world (just for funzies)
+    // print hello world 
+    printf("Hello world!");
+
     return 0;
 
 }
