@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -88,7 +89,7 @@ void fillZeros(float* array_h, int n) {
 // main entry point
 int main(int argc, char *argv[]) {
      // variable n - length of arrays
-    int n = 1000;
+    int n = atoi(argv[1]);
 
     // Declare arrays of length n
     float A_h[n];

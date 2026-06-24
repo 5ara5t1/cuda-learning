@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     struct timespec start, end;
     
      // variable n - length of arrays
-    int n = 1000;
+    int n = atoi(argv[1]);
 
     // Declare arrays of length n
     float A_h[n];
