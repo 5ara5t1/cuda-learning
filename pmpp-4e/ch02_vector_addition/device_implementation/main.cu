@@ -1,13 +1,21 @@
 #include <stdlib.h>
 #include <time.h>
 
+__global__
+void vecAddKernal(float* A, float* B, float* C, int n) {
+    int i = thradIdx.x + blockDim.x * blockIdx.x;
+    if(i < n) {
+        c[i] = A[i] + B[i];
+    }
+}
+
 /**
 * Name: vecAdd
-* Type: Function
+* Type: __global__Function
 * Accepts: float pointer A_h, float pointer B_h, float pointer C_h, int n 
 * Returns: void
 * Description: launches kernal to perform C_h[i] =  A_h[i] + B_h[i]
-* for i < n, with n = array length
+* 
 */
 
 void vecAdd(float* A_h, float* B_h, float* C_h, int n) {
@@ -15,21 +23,26 @@ void vecAdd(float* A_h, float* B_h, float* C_h, int n) {
     int size = n* sizeof(float);
 
     // pointers to float arrays on device
-    float *d_A, d_B, d_C;
+    float *A_d, *B_d, *C_d;
 
     // Part 1: Allocate deice memory for A, B, and C
-    // Copy A and B to device memory
     cudaMalloc((void**)&A_d, size);
     cudaMalloc((void**)&B_d, size);
     cudaMalloc((void**)&B_d, size);
 
-
-
+     // Copy A and B to device memory
+    cudaMemcpy(A_d, A, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(B_d, B, size, cudaMemcpyHostToDevice);
 
     // Part 2: Call kenral - to launch a grid of threads
     // to perfor the actual vector addition
+    vecAddKernel<<<ceil(n/256.0), 256>>>(A_d, B_d, C_d, n);
 
+
+    
     // Part 3: Copy C from the device memory
+    cudaMemcpy(C, C_d, cudaMemCpyDeviceToHost);
+    
     // Free device vectors
     cudaFree(A_d);
     cudaFree(B_d);
@@ -71,9 +84,6 @@ void fillZeros(float* array_h, int n) {
 
 // main entry point
 int main() {
-    // create struct for measuring elapsed program time
-    struct timespec start, end;
-    
      // variable n - length of arrays
     int n = 1000;
 
