@@ -50,7 +50,7 @@ void fillZeros(float* array_h, int n) {
 
 
 // main entry point
-int main() {
+int main(int argc, char *argv[]) {
     // create struct for measuring elapsed program time
     struct timespec start, end;
     

@@ -86,7 +86,7 @@ void fillZeros(float* array_h, int n) {
 
 
 // main entry point
-int main() {
+int main(int argc, char *argv[]) {
      // variable n - length of arrays
     int n = 1000;
 
