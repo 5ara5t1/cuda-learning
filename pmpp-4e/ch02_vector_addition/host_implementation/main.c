@@ -51,17 +51,24 @@ void fillZeros(float* array_h, int n) {
 
 // main entry point
 int main(int argc, char *argv[]) {
-    // create struct for measuring elapsed program time
-    struct timespec start, end;
-    
+    // require array length n as the first command-line argument
+    if (argc < 2) {
+        fprintf(stderr, "usage: %s <n>\n", argv[0]);
+        return 1;
+    }
+
      // variable n - length of arrays
     int n = atoi(argv[1]);
 
-    // Declare arrays of length n
-    float A_h[n];
-    float B_h[n];
-    float C_h[n];
-    
+    // Allocate arrays of length n on the heap (stack VLAs overflow for large n)
+    float *A_h = (float*)malloc(n * sizeof(float));
+    float *B_h = (float*)malloc(n * sizeof(float));
+    float *C_h = (float*)malloc(n * sizeof(float));
+    if (!A_h || !B_h || !C_h) {
+        fprintf(stderr, "allocation failed for n=%d\n", n);
+        return 1;
+    }
+
     // Fill out arrays with random numbers
     fillRand(A_h, n);
     fillRand(B_h, n);
@@ -69,7 +76,11 @@ int main(int argc, char *argv[]) {
 
     // Perform Vector Addition
     vecAdd(A_h, B_h, C_h,n);
-    
+
+    // Free host arrays
+    free(A_h);
+    free(B_h);
+    free(C_h);
 
     // Measure program performance after compilation using time ./main on ubuntuserver
 
