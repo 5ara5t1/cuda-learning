@@ -2,10 +2,10 @@
 #include <time.h>
 
 __global__
-void vecAddKernal(float* A, float* B, float* C, int n) {
-    int i = thradIdx.x + blockDim.x * blockIdx.x;
+void vecAddKernel(float* A, float* B, float* C, int n) {
+    int i = threadIdx.x + blockDim.x * blockIdx.x;
     if(i < n) {
-        c[i] = A[i] + B[i];
+        C[i] = A[i] + B[i];
     }
 }
 
@@ -28,11 +28,12 @@ void vecAdd(float* A_h, float* B_h, float* C_h, int n) {
     // Part 1: Allocate deice memory for A, B, and C
     cudaMalloc((void**)&A_d, size);
     cudaMalloc((void**)&B_d, size);
-    cudaMalloc((void**)&B_d, size);
+    cudaMalloc((void**)&C_d, size);
 
      // Copy A and B to device memory
-    cudaMemcpy(A_d, A, size, cudaMemcpyHostToDevice);
-    cudaMemcpy(B_d, B, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(A_d, A_h, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(B_d, B_h, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(C_d, C_h, size, cudaMemcpyHostToDevice);
 
     // Part 2: Call kenral - to launch a grid of threads
     // to perfor the actual vector addition
@@ -41,7 +42,7 @@ void vecAdd(float* A_h, float* B_h, float* C_h, int n) {
 
     
     // Part 3: Copy C from the device memory
-    cudaMemcpy(C, C_d, cudaMemCpyDeviceToHost);
+    cudaMemcpy(C_h, C_d,size, cudaMemcpyDeviceToHost);
     
     // Free device vectors
     cudaFree(A_d);
@@ -49,6 +50,8 @@ void vecAdd(float* A_h, float* B_h, float* C_h, int n) {
     cudaFree(C_d);
 
 }
+
+
 
 
 /**
