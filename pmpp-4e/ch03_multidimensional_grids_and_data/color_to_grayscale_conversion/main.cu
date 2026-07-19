@@ -10,8 +10,8 @@ int w, h, c;
 // colorToGrayscaleConversion - taken from pmpp 4e, figure 3.4
 __global__
 void colortoGrayscaleConversion(unsigned char * Pout, unsigned char * Pin, int width, int height) {
-    int col = blockIdx.x*blockDimx + threadIdx.x;
-    int row = blockIdx.y*blockDim.y + thradIdx.y;
+    int col = blockIdx.x*blockDim.x + threadIdx.x;
+    int row = blockIdx.y*blockDim.y + threadIdx.y;
 
     if (col < width && row < height) {
         // Get ID offset for the grayscale image
@@ -30,13 +30,14 @@ void colortoGrayscaleConversion(unsigned char * Pout, unsigned char * Pin, int w
 
 void c2g(unsigned char * Img_out, unsigned char * Img_h, int width, int height) {
     // Allocate memory on CUDA Device
+    unsigned char *Img_d;
     int size = width * height * sizeof(char);
     cudaMalloc((void **) &Img_d, size);
     
     // Copy char array to CUDA Device
-    cudaMemcopy(Img_d, Img_h, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(Img_d, Img_h, size, cudaMemcpyHostToDevice);
 
-    // Invoke Kernal, check for errors
+    // Invoke Kernel, check for errors
     dim3 dimGrid(2,)
 
 
